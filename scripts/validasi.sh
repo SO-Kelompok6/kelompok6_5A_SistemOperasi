@@ -5,10 +5,10 @@ SUMBER="$1"
 TUJUAN="$2"
 
 # Lokasi file log otomatis (disimpan di folder logs/ pada direktori utama proyek)
-LOG_FILE="../logs/validasi.log"
+LOG_FILE="../evidence/validasi.log"
 
 # Pastikan folder logs/ ada, jika belum ada buat otomatis
-mkdir -p ../logs
+mkdir -p ../evidence
 
 echo "=================================================="
 echo "      PROSES VALIDASI PARAMETER & DIREKTORI       "
