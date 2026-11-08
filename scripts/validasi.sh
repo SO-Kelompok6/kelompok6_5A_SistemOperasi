@@ -4,10 +4,10 @@
 SUMBER="$1"
 TUJUAN="$2"
 
-# Lokasi file log otomatis (disimpan di folder logs/ pada direktori utama proyek)
+# Lokasi file log otomatis (disimpan di folder evidence/ pada direktori utama proyek)
 LOG_FILE="../evidence/validasi.log"
 
-# Pastikan folder logs/ ada, jika belum ada buat otomatis
+# Pastikan folder evidence/ ada, jika belum ada buat otomatis
 mkdir -p ../evidence
 
 echo "=================================================="
