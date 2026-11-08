@@ -1,0 +1,12 @@
+[2026-11-06 21:34:42] [ERROR] Validasi gagal - Parameter tidak lengkap/kosong.
+[2026-11-06 21:37:14] [ERROR] Validasi gagal - Sumber '../apAya' tidak ditemukan.
+[2026-11-06 21:40:33] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../dataBackup'
+[2026-11-06 23:14:31] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../readonly'
+[2026-11-06 23:15:28] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../readonly'
+[2026-11-06 23:16:35] [SUCCESS] Validasi berhasil untuk Sumber: '../dataBackup' | Tujuan: '../readonly'
+[2026-11-06 23:20:03] [ERROR] Validasi gagal - Tujuan '../readonly' Read-Only.
+[2026-11-06 23:30:11] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../dataBackup'
+[2026-11-06 23:53:20] [ERROR] Validasi gagal - Parameter tidak lengkap/kosong.
+[2026-11-06 23:53:50] [ERROR] Validasi gagal - Sumber '../apAyash' tidak ditemukan.
+[2026-11-06 23:54:15] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../dataBackup'
+[2026-11-06 23:54:36] [ERROR] Validasi gagal - Tujuan '../readonly' Read-Only.
