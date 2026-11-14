@@ -50,7 +50,7 @@ fi
 # 6. Atur izin arsip
 chmod 640 "$ARSIP"
 
-UKURAN=$(du -h "$ARSIP" | cut -f1)
+UKURAN="$(stat -c %s "$ARSIP") byte"
 echo "[SUCCESS] Arsip dibuat: $ARSIP ($UKURAN)"
 log SUCCESS "Arsip '$ARSIP' dibuat dari '$SUMBER' ($UKURAN)."
 exit 0
