@@ -102,14 +102,19 @@ Exit status `validasi.sh`: `0` valid, `1` parameter tidak lengkap, `2` sumber ti
 
 Kasus uji validasi (Anggota 1), dijalankan sebagai `backupop` dari `scripts/`:
 
-| ID | Perintah | Hasil diharapkan |
-| :---- | :---- | :---- |
-| KU-1.1 | `./validasi.sh` | Pesan parameter tidak lengkap, exit 1 |
-| KU-1.2 | `./validasi.sh ../apAya ../dataBackup` | Sumber tidak ditemukan, exit 2 |
-| KU-1.3 | `./validasi.sh ../dataSumber ../readonly` | Tujuan read-only ditolak, exit 3 |
-| KU-1.4 | `./validasi.sh ../dataSumber ../dataBackup` | Validasi berhasil, exit 0 |
+## Pengujian
 
-Log tersimpan di `evidence/validasi.log`. Langkah dan bukti kasus uji lain ada di `tests/` dan `evidence/`.
+Seluruh kasus uji dijalankan sebagai `backupop` dari `scripts/`. Detail perintah, langkah, dan bukti tiap kasus ada di `tests/` dan `evidence/`. Log validasi tersimpan di `evidence/validasi.log`.
+
+| Anggota | Komponen | ID Uji | Skenario yang Diuji | Ekspektasi Output | Exit Code | Status |
+| :---- | :---- | :----: | :---- | :---- | :----: | :----: |
+| Dimah Alika Cahyani (2510512014) | Validasi sumber dan parameter | KU-1.1 s.d. KU-1.4 | Parameter kosong, sumber tidak ada, tujuan read-only (negatif), dan parameter valid (positif) | Pesan error yang jelas untuk tiga uji negatif, pesan sukses untuk uji positif | 1, 2, 3, 0 | Lulus |
+| Audira Syifa Amalia Rasyid (2510512011) | Pembuatan arsip | KU-2.1 s.d. KU-2.4 | Arsip terbentuk dan utuh (positif), tujuan read-only dan sumber tidak ada (negatif) | Arsip `.tar.gz` bernama `YYYY-MM-DD_HHMMSS` dengan isi sama seperti sumber, dan penolakan tanpa arsip pada uji negatif | 0, non-zero | [ISI] |
+| Alya Dyah Sari (2510512036) | Verifikasi integritas checksum | KU-3.1 s.d. KU-3.5 | Arsip asli lolos, salinan yang diubah terdeteksi, arsip asli tetap utuh, akun berhak (`backupop`) dan tidak berhak ditolak | HASIL: LULUS untuk arsip asli, HASIL: GAGAL untuk salinan yang diubah, *Permission denied* untuk akun tidak berhak | 0, 1, non-zero | Lulus |
+| Lucky Ardillah (2510512029) | Pemulihan data (restore) | KU-4.1 s.d. KU-4.4 | Restore sukses ke `dataUji` (positif), arsip rusak ditolak dan tujuan sumber asli ditolak (negatif) | Berkas terekstrak sama dengan sumber, dan penolakan tanpa ekstraksi pada uji negatif | 0, non-zero | [ISI] |
+| Dinda Azzahra (2510512035) | Locking, logging, dan Docker | KU-5.1 s.d. KU-5.4 | Docker membaca laporan (positif), Docker menulis ditolak, dua backup bersamaan ditolak `flock`, checksum host tidak berubah | `laporan.txt` terbaca, *Read-only file system* saat menulis, proses kedua ditolak, checksum sebelum dan sesudah sama | 0, non-zero | [ISI] |
+
+Exit status `validasi.sh`: `0` valid, `1` parameter tidak lengkap, `2` sumber tidak ditemukan atau bukan direktori, `3` direktori tujuan tidak dapat ditulis.
 
 ## Aktivitas Docker
 
