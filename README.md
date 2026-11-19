@@ -72,36 +72,6 @@ sudo chmod 770 dataBackup dataUji evidence
 sudo chmod 555 readonly
 ```
 
-Isi `dataSumber/` dengan data dummy:
-
-```bash
-echo "isi uji 1" | sudo tee dataSumber/file1.txt
-echo "isi uji 2" | sudo tee dataSumber/file2.txt
-sudo chown backupadm:backupgrp dataSumber/*
-```
-
-Matriks hak akses lengkap ada di laporan bagian 2.3.
-
-## Menjalankan
-
-Semua skrip dijalankan sebagai operator dari dalam `scripts/`, karena jalur antardirektori bersifat relatif.
-
-```bash
-sudo -u backupop -i
-cd /opt/backup-sistem/scripts
-
-./validasi.sh ../dataSumber ../dataBackup
-echo $?
-```
-
-Exit status `validasi.sh`: `0` valid, `1` parameter tidak lengkap, `2` sumber tidak ditemukan atau bukan direktori, `3` direktori tujuan tidak dapat ditulis.
-
-**[ISI oleh anggota lain: cara menjalankan backup, verifikasi, restore, dan locking]**
-
-## Pengujian
-
-Kasus uji validasi (Anggota 1), dijalankan sebagai `backupop` dari `scripts/`:
-
 ## Pengujian
 
 Seluruh kasus uji dijalankan sebagai `backupop` dari `scripts/`. Detail perintah, langkah, dan bukti tiap kasus ada di `tests/` dan `evidence/`. Log validasi tersimpan di `evidence/validasi.log`.
