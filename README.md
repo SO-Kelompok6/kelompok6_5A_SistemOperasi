@@ -15,8 +15,8 @@ Kumpulan skrip Bash untuk mencadangkan direktori pada Linux dengan alur: validas
 | Anggota | Nama | NIM | Komponen | Skrip |
 | :---- | :---- | :---- | :---- | :---- |
 | 1 | Dimah Alika Cahyani | 2510512014 | Validasi sumber dan parameter | `validasi.sh` |
-| 2 | Audira Syifa Amalia Rasyid | 2510512011 | Pembuatan arsip dan kompresi data | [ISI] |
-| 3 | Alya Dyah Sari | 2510512036 | Verifikasi integritas data dan checksum | [ISI] |
+| 2 | Audira Syifa Amalia Rasyid | 2510512011 | Pembuatan arsip dan kompresi data | `backup.sh` |
+| 3 | Alya Dyah Sari | 2510512036 | Verifikasi integritas data dan checksum | `checksum.sh` |
 | 4 | Lucky Ardillah | 2510512029 | Pemulihan data (restore) | [ISI] |
 | 5 | Dinda Azzahra | 2510512035 | Locking, logging, dan aktivitas Docker | [ISI] |
 
