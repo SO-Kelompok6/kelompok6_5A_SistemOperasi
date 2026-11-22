@@ -1,0 +1,44 @@
+Penjelasan skrip singkat:
+
+#KU 1.1
+if [ -z "$SUMBER" ] || [ -z "$TUJUAN" ]; then ##Memeriksa apakah salah satu argumen kosong (-z berarti panjang string nol).##
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] [ERROR] Validasi gagal - Parameter tidak lengkap/kosong." >> "$LOG_FILE" 
+    #Menambahkan catatan waktu dan penyebab kegagalan ke akhir log tanpa menghapus isi sebelumnya.#
+    exit 1 #Menghentikan skrip dengan exit status 1 sebagai tanda parameter tidak lengkap.#
+
+#KU 1.2
+if [ ! -d "$SUMBER" ]; then  #Memeriksa apakah jalur sumber bukan direktori yang valid.
+    echo "[ERROR] Direktori sumber '$SUMBER' tidak ditemukan atau bukan direktori!"
+    Operator -d meminta kernel membaca metadata inode, sehingga jalur yang tidak ada maupun yang berupa berkas biasa sama-sama ditolak.#
+    exit 2 #Menghentikan skrip dengan exit status 2 sebagai tanda sumber tidak ditemukan.
+
+#KU 1.3
+if [ -d "$TUJUAN" ] && [ ! -w "$TUJUAN" ]; then
+    #Memeriksa apakah direktori tujuan ada dan tidak dapat ditulis. Operator -w mencocokkan UID dan GID pengguna yang menjalankan skrip dengan pemilik, grup, dan mode 
+    pada inode, sehingga hasilnya bergantung pada akun penguji. Pada pengujian, akun backupop menjalankan skrip terhadap ../readonly bermode 555.
+    exit 3 #Menghentikan skrip dengan exit status 3 sebagai tanda penolakan akses tulis/edit.
+
+#KU 1.4
+echo "[SUCCESS] Direktori sumber '$SUMBER' ditemukan."
+echo "[SUCCESS] Parameter valid dan siap diproses ke direktori '$TUJUAN'."
+exit 0 #Menandakan seluruh pemeriksaan lolos. Nilai 0 inilah yang dipakai backup.sh untuk memutuskan apakah proses pengarsipan boleh dilanjutkan.
+
+
+#BUKTI KASUS UJI 1.1 HINGGA 1.4
+
+| ID Uji | Nama Skenario | Kondisi Input / Parameter | Ekspektasi Output | Ekspektasi Exit Code |
+| :----: | :---- | :---- | :---- | :----: |
+| KU-1.1 | Uji Negatif: Parameter Kosong | Tidak memasukkan argumen | Pesan error parameter tidak lengkap | 1 |
+| KU-1.2 | Uji Negatif: Sumber Tidak Ada | `../apAya` (folder palsu) | Pesan error direktori tidak ditemukan | 2 |
+| KU-1.3 | Uji Negatif: Tujuan Read-Only | `../readonly` (chmod 555) | Pesan error akses tulis ditolak | 3 |
+| KU-1.4 | Uji Positif: Parameter Valid | `../dataSumber` dan `../dataBackup` | Pesan sukses validasi berhasil | 0 |
+
+
+[2026-11-22 02:11:04] [ERROR] Validasi gagal - Parameter tidak lengkap/kosong.
+[2026-11-22 02:11:04] [EXIT] validasi.sh selesai dengan exit status 1
+[2026-11-22 02:11:47] [ERROR] Validasi gagal - Sumber '../apAya' tidak ditemukan.
+[2026-11-22 02:11:47] [EXIT] validasi.sh selesai dengan exit status 2
+[2026-11-22 02:12:43] [ERROR] Validasi gagal - Tujuan '../readonly' Read-Only.
+[2026-11-22 02:12:43] [EXIT] validasi.sh selesai dengan exit status 3
+[2026-11-22 02:13:32] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../dataBackup'
+[2026-11-22 02:13:32] [EXIT] validasi.sh selesai dengan exit status 0
