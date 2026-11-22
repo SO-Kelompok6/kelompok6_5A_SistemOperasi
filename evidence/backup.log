@@ -1,5 +1,0 @@
-[2026-11-14 07:10:51] [SUCCESS] Arsip '../dataBackup/backup_2026-11-14_071051.tar.gz' dibuat dari '/home/audi/data_uji_anggota2' (316 byte).
-[2026-11-14 07:27:35] [ERROR] Backup dibatalkan, validasi gagal dengan exit 3.
-tar: uji_tar/rahasia.txt: Cannot open: Permission denied
-tar: Exiting with failure status due to previous errors
-[2026-11-14 07:34:01] [ERROR] tar gagal membuat '../dataBackup/backup_2026-11-14_073401.tar.gz'. Arsip parsial dihapus.
