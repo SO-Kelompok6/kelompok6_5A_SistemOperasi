@@ -3,8 +3,8 @@
 # Pemakaian: ./restore.sh <arsip> [direktori_tujuan]
 
 ARSIP="$1"
-TUJUAN="${2:-../dataUji}"
-LOG_FILE="../evidence/restore.log"
+TUJUAN="${2:-dataUji}"
+LOG_FILE="evidence/restore.log"
 
 # Fungsi pencatatan aktivitas
 log() {
@@ -28,14 +28,14 @@ if [ ! -f "$ARSIP" ]; then
     error 2 "Arsip '$ARSIP' tidak ditemukan."
 fi
 
-if [ ! -f "./checksum.sh" ]; then
+if [ ! -f "scripts/checksum.sh" ]; then
     error 2 "checksum.sh tidak ditemukan. Jalankan dari folder scripts/."
 fi
 
-mkdir -p ../evidence || exit 3
+mkdir -p evidence || exit 3
 
 # 3. Verifikasi checksum sebelum ekstraksi
-if ! bash ./checksum.sh verify "$ARSIP"; then
+if ! bash scripts/checksum.sh verify "$ARSIP"; then
     error 4 "Verifikasi checksum gagal. Restore dibatalkan."
 fi
 
@@ -58,7 +58,7 @@ if ! tar -tzf "$ARSIP" | awk '
 fi
 
 # 5. Pastikan tujuan tidak sama dengan atau mencakup sumber
-SUMBER_REAL=$(realpath -m ../dataSumber)
+SUMBER_REAL=$(realpath -m dataSumber)
 TUJUAN_REAL=$(realpath -m "$TUJUAN")
 
 case "$TUJUAN_REAL/" in
