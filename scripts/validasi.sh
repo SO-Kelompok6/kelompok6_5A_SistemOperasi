@@ -9,6 +9,8 @@ LOG_FILE="../evidence/validasi.log"
 
 # Pastikan folder evidence/ ada, jika belum ada buat otomatis
 mkdir -p ../evidence
+trap 'status=$?; echo "[$(date "+%Y-%m-%d %H:%M:%S")] [EXIT] validasi.sh selesai dengan exit status $status" >> "$LOG_FILE"' EXIT
+
 
 echo "=================================================="
 echo "      PROSES VALIDASI PARAMETER & DIREKTORI       "
