@@ -1,12 +1,18 @@
-[2026-11-06 21:34:42] [ERROR] Validasi gagal - Parameter tidak lengkap/kosong.
-[2026-11-06 21:37:14] [ERROR] Validasi gagal - Sumber '../apAya' tidak ditemukan.
-[2026-11-06 21:40:33] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../dataBackup'
-[2026-11-06 23:14:31] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../readonly'
-[2026-11-06 23:15:28] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../readonly'
-[2026-11-06 23:16:35] [SUCCESS] Validasi berhasil untuk Sumber: '../dataBackup' | Tujuan: '../readonly'
-[2026-11-06 23:20:03] [ERROR] Validasi gagal - Tujuan '../readonly' Read-Only.
-[2026-11-06 23:30:11] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../dataBackup'
-[2026-11-06 23:53:20] [ERROR] Validasi gagal - Parameter tidak lengkap/kosong.
-[2026-11-06 23:53:50] [ERROR] Validasi gagal - Sumber '../apAyash' tidak ditemukan.
-[2026-11-06 23:54:15] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../dataBackup'
-[2026-11-06 23:54:36] [ERROR] Validasi gagal - Tujuan '../readonly' Read-Only.
+[2026-11-22 02:06:21] [ERROR] Validasi gagal - Parameter tidak lengkap/kosong.
+[2026-11-22 02:06:21] [EXIT] validasi.sh selesai dengan exit status 1
+[2026-11-22 02:06:21] [ERROR] Validasi gagal - Sumber '../apAya' tidak ditemukan.
+[2026-11-22 02:06:21] [EXIT] validasi.sh selesai dengan exit status 2
+[2026-11-22 02:06:21] [ERROR] Validasi gagal - Tujuan '../readonly' Read-Only.
+[2026-11-22 02:06:21] [EXIT] validasi.sh selesai dengan exit status 3
+[2026-11-22 02:06:21] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../dataBackup'
+[2026-11-22 02:06:21] [EXIT] validasi.sh selesai dengan exit status 0
+[2026-11-22 02:10:56] [ERROR] Validasi gagal - Parameter tidak lengkap/kosong.
+[2026-11-22 02:10:56] [EXIT] validasi.sh selesai dengan exit status 1
+[2026-11-22 02:11:04] [ERROR] Validasi gagal - Parameter tidak lengkap/kosong.
+[2026-11-22 02:11:04] [EXIT] validasi.sh selesai dengan exit status 1
+[2026-11-22 02:11:47] [ERROR] Validasi gagal - Sumber '../apAya' tidak ditemukan.
+[2026-11-22 02:11:47] [EXIT] validasi.sh selesai dengan exit status 2
+[2026-11-22 02:12:43] [ERROR] Validasi gagal - Tujuan '../readonly' Read-Only.
+[2026-11-22 02:12:43] [EXIT] validasi.sh selesai dengan exit status 3
+[2026-11-22 02:13:32] [SUCCESS] Validasi berhasil untuk Sumber: '../dataSumber' | Tujuan: '../dataBackup'
+[2026-11-22 02:13:32] [EXIT] validasi.sh selesai dengan exit status 0
