@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 SUMBER="$1"
