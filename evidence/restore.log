@@ -1,2 +1,5 @@
 [2026-11-22 14:52:27] [SUCCESS] Restore arsip 'dataBackup/tes_restore.tar.gz' berhasil ke '/home/lucky/kelompok6_5A_SistemOperasi/dataUji'.
 [2026-11-22 16:48:04] [ERROR] Verifikasi checksum gagal. Restore dibatalkan.
+[2026-11-23 00:38:53] [ERROR] Arsip 'dataBackup/tes_restore.tar.gz' tidak ditemukan.
+[2026-11-23 00:43:38] [ERROR] Tujuan restore berada di dalam direktori sumber.
+[2026-11-23 00:45:45] [ERROR] Direktori tujuan tidak kosong. Restore dibatalkan.
