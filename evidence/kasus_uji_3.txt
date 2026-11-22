@@ -1,0 +1,8 @@
+KASUS UJI 3 - Alya
+dataBackup/tes.tar.gz: OK
+HASIL: LULUS
+exit: 0
+dataBackup/uji.tar.gz: FAILED
+sha256sum: WARNING: 1 computed checksum did NOT match
+HASIL: GAGAL
+exit: 1
