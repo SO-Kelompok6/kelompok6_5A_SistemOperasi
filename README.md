@@ -61,7 +61,7 @@ sudo useradd -m -s /bin/bash -G backupgrp backupop
 sudo passwd backupadm
 sudo passwd backupop
 
-sudo git clone https://github.com/likaxheri/kelompok6_5A_SistemOperasi.git /opt/backup-sistem
+sudo git clone https://github.com/SO-Kelompok6/kelompok6_5A_SistemOperasi.git
 cd /opt/backup-sistem
 sudo mkdir -p dataSumber dataBackup dataUji evidence output readonly
 
