@@ -1,0 +1,3 @@
+[2026-11-21 11:08:46] [SUCCESS] Arsip '../dataBackup/backup_2026-11-21_110846.tar.gz' dibuat dari '../dataSumber' (188 byte).
+[2026-11-22 05:02:30] [ERROR] Backup dibatalkan, validasi gagal dengan exit 2.
+[2026-11-22 05:04:48] [SUCCESS] Arsip '../dataBackup/backup_2026-11-22_050448.tar.gz' dibuat dari '../dataSumber' (188 byte).
