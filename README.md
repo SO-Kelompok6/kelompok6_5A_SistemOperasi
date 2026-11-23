@@ -18,7 +18,7 @@ Kumpulan skrip Bash untuk mencadangkan direktori pada Linux dengan alur: validas
 | 2 | Audira Syifa Amalia Rasyid | 2510512011 | Pembuatan arsip dan kompresi data | `backup.sh` |
 | 3 | Alya Dyah Sari | 2510512036 | Verifikasi integritas data dan checksum | `checksum.sh` |
 | 4 | Lucky Ardillah | 2510512029 | Pemulihan data (restore) | `restore.sh` |
-| 5 | Dinda Azzahra | 2510512035 | Locking, logging, dan aktivitas Docker | [ISI] |
+| 5 | Dinda Azzahra | 2510512035 | Locking, logging, dan aktivitas Docker | `backup-lock.sh` |
 
 Sesuaikan pembagian komponen dengan matriks kontribusi di laporan (bagian 7.2).
 
@@ -34,7 +34,7 @@ Sesuaikan pembagian komponen dengan matriks kontribusi di laporan (bagian 7.2).
 | sha256sum | coreutils 9.7 |
 | flock | util-linux 2.41.5 |
 | Docker | 26.1.5+dfsg1 |
-| Image Docker | `alpine:` **[ISI: tag yang dipakai]** |
+| Image Docker | `debian:trixie-slim` |
 
 ## Struktur Repository
 
@@ -91,18 +91,18 @@ Exit status `validasi.sh`: `0` valid, `1` parameter tidak lengkap, `2` sumber ti
 Container hanya membaca laporan melalui bind mount read-only. Image harus sudah diunduh sebelum demonstrasi.
 
 ```bash
-docker pull alpine:<tag>
+docker pull debian:trixie-slim
 
 # Positif: membaca laporan, exit status 0
 docker run --rm \
-  --mount type=bind,src="$(pwd)/output",dst=/data,readonly \
-  alpine:<tag> cat /data/laporan.txt
+  -v /opt/backup-sistem/output:/report:ro \
+  debian:trixie-slim cat /report/laporan.txt
 
 # Negatif: menulis ke mount read-only ditolak, exit status bukan nol
 docker run --rm \
-  --mount type=bind,src="$(pwd)/output",dst=/data,readonly \
-  alpine:<tag> sh -c 'echo "uji perubahan" >> /data/laporan.txt'
-echo $?
+  -v /opt/backup-sistem/output:/report:ro \
+  debian:trixie-slim sh -c 'echo "TEST" >> /report/laporan.txt'
+echo \$?
 ```
 
 Jalankan dari `/opt/backup-sistem`. Bandingkan checksum `output/laporan.txt` sebelum dan sesudah pengujian untuk membuktikan berkas host tidak berubah.
