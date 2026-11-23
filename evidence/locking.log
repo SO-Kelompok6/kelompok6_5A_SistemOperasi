@@ -1,0 +1,7 @@
+[2026-11-21 11:08:46] [LOCK ACQUIRED] Proses backup dimulai.
+[2026-11-21 11:08:46] [SUCCESS] Backup selesai dengan sukses.
+[2026-11-21 11:24:29] [LOCKED] Backup ditolak karena proses lain sedang berjalan.
+[2026-11-22 05:02:30] [LOCK ACQUIRED] Proses backup dimulai.
+[2026-11-22 05:02:30] [ERROR] Backup gagal dengan exit code 2.
+[2026-11-22 05:04:48] [LOCK ACQUIRED] Proses backup dimulai.
+[2026-11-22 05:04:48] [SUCCESS] Backup selesai dengan sukses.
