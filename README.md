@@ -83,6 +83,9 @@ Seluruh kasus uji dijalankan sebagai `backupop` dari `scripts/`. Detail perintah
 | Dinda Azzahra (2510512035) | Locking, logging, dan Docker | KU-5.1 s.d. KU-5.4 | Docker membaca laporan (positif), Docker menulis ditolak, dua backup bersamaan ditolak `flock`, checksum host tidak berubah | `laporan.txt` terbaca, *Read-only file system* saat menulis, proses kedua ditolak, checksum sebelum dan sesudah sama | 0, 6, 1 | Lulus |
 
 Exit status `validasi.sh`: `0` valid, `1` parameter tidak lengkap, `2` sumber tidak ditemukan atau bukan direktori, `3` direktori tujuan tidak dapat ditulis.
+Exit status `restore.sh`: `0` berhasil dipulihkan, `1` parameter arsip kosong, `2` berkas arsip atau `checksum.sh` tidak ditemukan, `3` direktori tujuan tidak kosong, tidak dapat ditulis, atau menimpa `dataSumber`, `4` verifikasi checksum SHA-256 gagal (arsip korup), `5` arsip rusak, mengandung *path traversal* (`..`), atau gagal diekstrak.
+
+Exit status `backup-lock.sh`: `0` backup berhasil selesai, `6` proses ditolak karena lock sedang digunakan proses lain (`[LOCKED]`), dan meneruskan kode error *non-zero* dari `backup.sh` jika terjadi kegagalan.
 
 ## Aktivitas Docker
 
