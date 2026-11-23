@@ -46,8 +46,6 @@ dataUji/     # tujuan restore (tidak di-commit)
 evidence/    # log dan bukti pengujian
 output/      # laporan.txt untuk dibaca Docker
 readonly/    # direktori uji negatif (dibuat saat instalasi)
-tests/       # langkah uji positif/negatif dan data dummy
-docs/        # laporan akhir
 ```
 
 ## Instalasi
