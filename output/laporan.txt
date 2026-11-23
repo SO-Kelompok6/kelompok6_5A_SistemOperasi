@@ -1,0 +1,24 @@
+==========================================
+LAPORAN SISTEM OTOMASI BACKUP DATA
+==========================================
+Tanggal laporan : 2026-11-22 05:22:58
+Status locking    : BERHASIL
+Status backup     : BERHASIL
+
+HASIL PENGUJIAN LOCKING
+------------------------------------------
+[2026-11-21 11:24:29] [LOCKED] Backup ditolak karena proses lain sedang berjalan.
+[2026-11-22 05:02:30] [LOCK ACQUIRED] Proses backup dimulai.
+[2026-11-22 05:02:30] [ERROR] Backup gagal dengan exit code 2.
+[2026-11-22 05:04:48] [LOCK ACQUIRED] Proses backup dimulai.
+[2026-11-22 05:04:48] [SUCCESS] Backup selesai dengan sukses.
+
+HASIL PENGUJIAN BACKUP
+------------------------------------------
+[2026-11-21 11:08:46] [SUCCESS] Arsip '../dataBackup/backup_2026-11-21_110846.tar.gz' dibuat dari '../dataSumber' (188 byte).
+[2026-11-22 05:02:30] [ERROR] Backup dibatalkan, validasi gagal dengan exit 2.
+[2026-11-22 05:04:48] [SUCCESS] Arsip '../dataBackup/backup_2026-11-22_050448.tar.gz' dibuat dari '../dataSumber' (188 byte).
+
+==========================================
+AKHIR LAPORAN
+==========================================
