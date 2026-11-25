@@ -1,3 +1,36 @@
+Penjelasan skrip singkat:
+ 
+#KU 3.1 dan 3.2
+if sha256sum -c "$S"; then echo "HASIL: LULUS"; exit 0   #Menghitung ulang hash arsip dan membandingkannya dengan nilai di berkas .sha256. Jika cocok, LULUS dengan exit status 0.
+else echo "HASIL: GAGAL"; exit 1; fi   #Jika berbeda, GAGAL dengan exit status 1. Uji negatif memakai salinan arsip yang ditambah satu baris teks.
+ 
+#KU 3.3
+verify arsip asli lagi   #Memastikan arsip asli tidak ikut berubah setelah uji negatif.
+ 
+#KU 3.4 dan 3.5
+sudo -u backupop -i   #backupop anggota backupgrp sehingga boleh mengakses arsip.
+cd /opt/backup-sistem   #alya bukan anggota backupgrp sehingga kernel menolak (Permission denied).
+
+ 
+#BUKTI KASUS UJI 3.1 HINGGA 3.5
+ 
+| ID Uji | Nama Skenario | Kondisi Input / Parameter | Ekspektasi Output | Ekspektasi Exit Code |
+| :----: | :---- | :---- | :---- | :----: |
+| KU-3.1 | Uji Positif: Arsip Asli | `verify dataBackup/tes.tar.gz` | OK, HASIL: LULUS | 0 |
+| KU-3.2 | Uji Negatif: Salinan Diubah | `verify dataBackup/uji.tar.gz` | FAILED, HASIL: GAGAL | 1 |
+| KU-3.3 | Arsip Asli Setelah Uji Negatif | `verify dataBackup/tes.tar.gz` | OK, HASIL: LULUS | 0 |
+| KU-3.4 | Akun backupop | `verify` oleh backupop | OK, HASIL: LULUS | 0 |
+| KU-3.5 | Akun alya | `cd /opt/backup-sistem` oleh alya | Permission denied | non-nol |
+ 
+
+#LOG HASIL PENGUJIAN
+ 
+[KU-3.1] dataBackup/tes.tar.gz: OK | HASIL: LULUS | exit: 0
+[KU-3.2] dataBackup/uji.tar.gz: FAILED | HASIL: GAGAL | exit: 1
+[KU-3.3] dataBackup/tes.tar.gz: OK | HASIL: LULUS | exit: 0
+[KU-3.4] dataBackup/tes.tar.gz: OK | HASIL: LULUS | exit: 0
+[KU-3.5] bash: cd: /opt/backup-sistem: Permission denied
+
 KASUS UJI 3 - Alya
 dataBackup/tes.tar.gz: OK
 HASIL: LULUS
