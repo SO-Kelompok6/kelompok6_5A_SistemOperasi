@@ -1,3 +1,26 @@
+Penjelasan log singkat:
+
+#Format baris
+[2026-11-21 11:08:46] [SUCCESS] pesan   #Tiap baris berisi waktu kejadian, tingkat log (SUCCESS atau ERROR), dan pesan kejadian.
+
+#Baris 1
+[2026-11-21 11:08:46] [SUCCESS] Arsip '../dataBackup/backup_2026-11-21_110846.tar.gz' dibuat dari '../dataSumber' (188 byte).   #Backup berhasil. Nama arsip memakai timestamp YYYY-MM-DD_HHMMSS sesuai waktu pembuatan, sumbernya folder dataSumber, dan ukuran arsip 188 byte.
+
+#Baris 2
+[2026-11-22 05:02:30] [ERROR] Backup dibatalkan, validasi gagal dengan exit 2.   #Backup tidak dijalankan karena validasi input gagal. Exit status 2 dari validasi berarti direktori sumber tidak ditemukan atau bukan direktori.
+
+#Baris 3
+[2026-11-22 05:04:48] [SUCCESS] Arsip '../dataBackup/backup_2026-11-22_050448.tar.gz' dibuat dari '../dataSumber' (188 byte).   #Backup berhasil setelah validasi lolos, dan arsip baru dibuat dengan timestamp waktu pembuatannya.
+
+
+#BUKTI LOG BACKUP
+
+| Baris | Waktu | Level | Peristiwa | Arti |
+| :----: | :---- | :----: | :---- | :---- |
+| 1 | 2026-11-21 11:08:46 | SUCCESS | Arsip dibuat | Backup berhasil, ukuran 188 byte |
+| 2 | 2026-11-22 05:02:30 | ERROR | Backup dibatalkan | Validasi gagal (exit 2), tidak ada arsip dibuat |
+| 3 | 2026-11-22 05:04:48 | SUCCESS | Arsip dibuat | Backup berhasil setelah validasi lolos |
+
 [2026-11-21 11:08:46] [SUCCESS] Arsip '../dataBackup/backup_2026-11-21_110846.tar.gz' dibuat dari '../dataSumber' (188 byte).
 [2026-11-22 05:02:30] [ERROR] Backup dibatalkan, validasi gagal dengan exit 2.
 [2026-11-22 05:04:48] [SUCCESS] Arsip '../dataBackup/backup_2026-11-22_050448.tar.gz' dibuat dari '../dataSumber' (188 byte).
