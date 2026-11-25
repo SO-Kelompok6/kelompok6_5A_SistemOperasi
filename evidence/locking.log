@@ -1,3 +1,33 @@
+Penjelasan log singkat:
+
+#Format baris
+[2026-11-21 11:08:46] [LOCK ACQUIRED] pesan   #Tiap baris berisi waktu kejadian, status lock atau hasil (LOCK ACQUIRED, LOCKED, SUCCESS, ERROR), dan pesan kejadian.
+
+#Baris 1 dan 2
+[2026-11-21 11:08:46] [LOCK ACQUIRED] Proses backup dimulai.   #Proses backup berhasil mendapatkan lock sehingga boleh masuk ke bagian kritis (critical section).
+[2026-11-21 11:08:46] [SUCCESS] Backup selesai dengan sukses.   #Backup selesai tanpa kesalahan.
+
+#Baris 3
+[2026-11-21 11:24:29] [LOCKED] Backup ditolak karena proses lain sedang berjalan.   #Backup kedua tidak mendapatkan lock karena proses lain sedang memegangnya, sehingga ditolak. Ini mencegah dua backup berjalan bersamaan pada sumber yang sama (race condition).
+
+#Baris 4 dan 5
+[2026-11-22 05:02:30] [LOCK ACQUIRED] Proses backup dimulai.   #Lock berhasil didapat.
+[2026-11-22 05:02:30] [ERROR] Backup gagal dengan exit code 2.   #Backup berhenti dengan kesalahan (exit code 2), sesuai catatan di backup.log bahwa validasi gagal pada waktu yang sama.
+
+#Baris 6 dan 7
+[2026-11-22 05:04:48] [LOCK ACQUIRED] Proses backup dimulai.   #Lock berhasil didapat pada percobaan berikutnya.
+[2026-11-22 05:04:48] [SUCCESS] Backup selesai dengan sukses.   #Backup selesai dengan sukses, sesuai arsip yang tercatat di backup.log pukul 05:04:48.
+
+
+#BUKTI LOG LOCKING
+
+| Baris | Waktu | Status | Peristiwa | Arti |
+| :----: | :---- | :----: | :---- | :---- |
+| 1-2 | 2026-11-21 11:08:46 | LOCK ACQUIRED, SUCCESS | Backup berjalan | Lock didapat, backup sukses |
+| 3 | 2026-11-21 11:24:29 | LOCKED | Backup ditolak | Ada proses lain, tidak ada backup ganda |
+| 4-5 | 2026-11-22 05:02:30 | LOCK ACQUIRED, ERROR | Backup gagal | Exit code 2 (validasi gagal) |
+| 6-7 | 2026-11-22 05:04:48 | LOCK ACQUIRED, SUCCESS | Backup berjalan | Lock didapat, backup sukses |
+
 [2026-11-21 11:08:46] [LOCK ACQUIRED] Proses backup dimulai.
 [2026-11-21 11:08:46] [SUCCESS] Backup selesai dengan sukses.
 [2026-11-21 11:24:29] [LOCKED] Backup ditolak karena proses lain sedang berjalan.
