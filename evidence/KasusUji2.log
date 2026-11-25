@@ -1,3 +1,42 @@
+Penjelasan skrip singkat:
+
+#KU 2.1 (Persiapan & Validasi)
+SUMBER="$1"; TUJUAN="$2"; LOG_FILE="../evidence/backup.log"
+mkdir -p ../evidence #Membuat folder evidence jika belum ada, agar log bisa ditulis.
+log() { ... } #Fungsi pencatat log berformat [timestamp] [LEVEL] pesan, ditambahkan (>>) ke backup.log tanpa menimpa isi sebelumnya.
+./validasi.sh "$SUMBER" "$TUJUAN"
+RC=$?
+if [ $RC -ne 0 ]; then ... exit $RC
+  #Memanggil validasi.sh lalu menyimpan exit status-nya di RC. Jika bukan 0, backup dibatalkan dan exit status
+  dari validasi.sh (1/2/3) diteruskan apa adanya, sehingga penyebab kegagalan tetap bisa dibedakan.
+
+#KU 2.2 (Direktori Tujuan)
+mkdir -p "$TUJUAN" || { ... exit 4 }
+  #Memastikan direktori tujuan ada. Jika gagal dibuat (misal tidak ada izin pada direktori induk), skrip berhenti dengan exit status 4.
+
+#KU 2.3 (Pembuatan Arsip)
+TS=$(date '+%Y-%m-%d_%H%M%S'); ARSIP="$TUJUAN/backup_${TS}.tar.gz"
+if ! tar -czf "$ARSIP" -C "$(dirname "$SUMBER")" "$(basename "$SUMBER")" 2>>"$LOG_FILE"; then
+  #Nama arsip memakai timestamp agar unik. Opsi -C membuat isi arsip memakai path relatif (tanpa path absolut).
+  Pesan error tar (stderr) dialihkan ke log. Jika tar gagal, arsip parsial dihapus (rm -f) lalu exit 4.
+
+#KU 2.4 (Verifikasi Arsip)
+if ! tar -tzf "$ARSIP" > /dev/null 2>&1; then ... exit 5
+  #Membaca ulang daftar isi arsip untuk memastikan hasilnya tidak korup. Jika gagal dibaca, arsip dihapus dan exit 5.
+
+#KU 2.5 (Finalisasi)
+chmod 640 "$ARSIP" #Pemilik baca/tulis, grup hanya baca, lainnya tanpa akses.
+echo "[SUCCESS] ..."; log SUCCESS ...; exit 0 #Mencatat ukuran arsip (stat -c %s) dan menandakan backup berhasil.
+
+
+#BUKTI KASUS UJI KU 2.1 HINGGA 2.5
+
+| ID Uji | Nama Skenario | Kondisi Input / Parameter | Ekspektasi Output | Ekspektasi Exit Code |
+| :----: | ----- | :----: | :----: | :----: |
+| KU-2.1 | Uji Positif: Backup Berhasil | Sumber valid, tujuan valid | Arsip .tar.gz dibuat, log SUCCESS | 0 |
+| KU-2.2 | Uji Negatif: Validasi Gagal | Tujuan read-only (555) | Backup dibatalkan, log ERROR | 3 (diteruskan dari validasi.sh) |
+| KU-2.3 | Uji Negatif: tar Gagal | Ada file di sumber tanpa izin baca (rahasia.txt) | Arsip parsial dihapus, log ERROR | 4 |
+
 [2026-11-14 07:10:51] [SUCCESS] Arsip '../dataBackup/backup_2026-11-14_071051.tar.gz' dibuat dari '/home/audi/data_uji_anggota2' (316 byte).
 [2026-11-14 07:27:35] [ERROR] Backup dibatalkan, validasi gagal dengan exit 3.
 tar: uji_tar/rahasia.txt: Cannot open: Permission denied
