@@ -1,5 +1,3 @@
-Penjelasan skrip singkat:
-
 #KU 2.1 (Persiapan & Validasi)
 SUMBER="$1"; TUJUAN="$2"; LOG_FILE="../evidence/backup.log"
 mkdir -p ../evidence #Membuat folder evidence jika belum ada, agar log bisa ditulis.
