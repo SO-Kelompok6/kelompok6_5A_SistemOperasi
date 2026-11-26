@@ -1,3 +1,5 @@
+Penjelasan skrip singkat:
+
 #KU 2.1
 TS=$(date '+%Y-%m-%d_%H%M%S')
 ARSIP="$TUJUAN/backup_${TS}.tar.gz"
