@@ -3,13 +3,13 @@ TS=$(date '+%Y-%m-%d_%H%M%S')
 ARSIP="$TUJUAN/backup_${TS}.tar.gz"
 tar -czf "$ARSIP" -C "$(dirname "$SUMBER")" "$(basename "$SUMBER")"
 chmod 640 "$ARSIP"
-#Membentuk nama arsip unik berbasis timestamp agar tidak menimpa arsip lama. Utilitas tar membaca berkas sumber secara sekuensial dari sistem berkas ext4 melalui buffer cache kernel lalu mengalirkannya lewat pipe ke algoritma kompresi gzip (level 6). Perintah chmod 640 mengatur bit izin inode menjadi -rw-r----- sehingga hanya pemilik yang dapat membaca/mengubah dan grup berwenang hanya dapat membaca.
+    #Membentuk nama arsip unik berbasis timestamp agar tidak menimpa arsip lama. Utilitas tar membaca berkas sumber secara sekuensial dari sistem berkas ext4 melalui buffer cache kernel lalu mengalirkannya lewat pipe ke algoritma kompresi gzip (level 6). Perintah chmod 640 mengatur bit izin inode menjadi -rw-r----- sehingga hanya pemilik yang dapat membaca/mengubah dan grup berwenang hanya dapat membaca.
 exit 0 #Menandakan seluruh proses pengarsipan dan uji keterbacaan (tar -tzf) berhasil dijalankan.
 
 #KU 2.2
 tar -xzf ../dataBackup/backup_2026-11-14_071051.tar.gz -C /tmp/cek
 diff -r ~/data_uji_anggota2 /tmp/cek/data_uji_anggota2 && echo "ISI SAMA"
-#Mengekstrak arsip ke direktori sementara /tmp/cek dan membandingkan seluruh isi serta struktur direktorinya secara rekursif terhadap sumber asli menggunakan diff -r untuk memastikan tidak ada data yang rusak atau hilang selama kompresi.
+    #Mengekstrak arsip ke direktori sementara /tmp/cek dan membandingkan seluruh isi serta struktur direktorinya secara rekursif terhadap sumber asli menggunakan diff -r untuk memastikan tidak ada data yang rusak atau hilang selama kompresi.
 
 #KU 2.3
 ./validasi.sh "$SUMBER" "$TUJUAN"
@@ -18,7 +18,7 @@ if [ $RC -ne 0 ]; then
     log ERROR "Backup dibatalkan, validasi gagal dengan exit $RC."
     exit $RC
 fi
-#Memanggil validasi.sh sebagai gerbang awal. Ketika direktori tujuan (../readonly) bermode 555 (tanpa izin tulis/write), validasi.sh mengembalikan exit code 3, sehingga backup.sh langsung membatalkan proses sebelum arsip dibuat dan meneruskan exit status 3.
+    #Memanggil validasi.sh sebagai gerbang awal. Ketika direktori tujuan (../readonly) bermode 555 (tanpa izin tulis/write), validasi.sh mengembalikan exit code 3, sehingga backup.sh langsung membatalkan proses sebelum arsip dibuat dan meneruskan exit status 3.
 
 #KU 2.4
 if ! tar -czf "$ARSIP" -C "$(dirname "$SUMBER")" "$(basename "$SUMBER")" 2>>"$LOG_FILE"; then
@@ -26,7 +26,7 @@ if ! tar -czf "$ARSIP" -C "$(dirname "$SUMBER")" "$(basename "$SUMBER")" 2>>"$LO
     log ERROR "tar gagal membuat '$ARSIP'. Arsip parsial dihapus."
     exit 4
 fi
-#Ketika berkas di dalam direktori sumber tidak memiliki izin baca (chmod 000 rahasia.txt), kernel menolak akses baca (Permission denied) sehingga tar gagal di tengah jalan. Blok penanganan error langsung menghapus berkas arsip parsial yang korup dengan rm -f agar tidak menyisakan file rusak dan keluar dengan exit status 4.
+    #Ketika berkas di dalam direktori sumber tidak memiliki izin baca (chmod 000 rahasia.txt), kernel menolak akses baca (Permission denied) sehingga tar gagal di tengah jalan. Blok penanganan error langsung menghapus berkas arsip parsial yang korup dengan rm -f agar tidak menyisakan file rusak dan keluar dengan exit status 4.
 
 
 #BUKTI KASUS UJI 2.1 HINGGA 2.4
@@ -44,4 +44,3 @@ fi
 tar: uji_tar/rahasia.txt: Cannot open: Permission denied
 tar: Exiting with failure status due to previous errors
 [2026-11-14 07:34:01] [ERROR] tar gagal membuat '../dataBackup/backup_2026-11-14_073401.tar.gz'. Arsip parsial dihapus.
-```[cite: 1, 13, 25, 26, 42, 43, 44]
