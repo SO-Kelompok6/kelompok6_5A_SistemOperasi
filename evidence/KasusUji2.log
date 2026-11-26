@@ -1,40 +1,42 @@
-#KU 2.1 (Uji Positif: Arsip, Timestamp, Permission 640)
-SUMBER="$1"; TUJUAN="$2"; LOG_FILE="../evidence/backup.log"
-mkdir -p ../evidence #Membuat folder evidence jika belum ada agar log bisa ditulis.
-log() { ... } #Fungsi pencatat log berformat [timestamp] [LEVEL] pesan, ditambahkan (>>) ke backup.log tanpa menimpa isi sebelumnya.
-mkdir -p "$TUJUAN" || { ... exit 4 } #Memastikan direktori tujuan ada. Jika gagal dibuat, skrip berhenti dengan exit status 4.
-TS=$(date '+%Y-%m-%d_%H%M%S'); ARSIP="$TUJUAN/backup_${TS}.tar.gz"
-  #Nama arsip memakai timestamp agar tidak menimpa arsip lama.
+#KU 2.1
+TS=$(date '+%Y-%m-%d_%H%M%S')
+ARSIP="$TUJUAN/backup_${TS}.tar.gz"
 tar -czf "$ARSIP" -C "$(dirname "$SUMBER")" "$(basename "$SUMBER")"
-  #Membuat arsip terkompresi gzip. Opsi -C membuat isi arsip memakai path relatif terhadap direktori induk sumber.
-tar -tzf "$ARSIP" > /dev/null 2>&1 #Membaca ulang daftar isi arsip untuk memastikan hasilnya tidak korup. Jika gagal, arsip dihapus dan exit 5.
-chmod 640 "$ARSIP" #Pemilik baca/tulis, grup hanya baca, lainnya tanpa akses.
-echo "[SUCCESS] ..."; log SUCCESS ...; exit 0 #Mencatat ukuran arsip (stat -c %s) dan menandakan backup berhasil. Exit 0.
+chmod 640 "$ARSIP"
+#Membentuk nama arsip unik berbasis timestamp agar tidak menimpa arsip lama. Utilitas tar membaca berkas sumber secara sekuensial dari sistem berkas ext4 melalui buffer cache kernel lalu mengalirkannya lewat pipe ke algoritma kompresi gzip (level 6). Perintah chmod 640 mengatur bit izin inode menjadi -rw-r----- sehingga hanya pemilik yang dapat membaca/mengubah dan grup berwenang hanya dapat membaca.
+exit 0 #Menandakan seluruh proses pengarsipan dan uji keterbacaan (tar -tzf) berhasil dijalankan.
 
-#KU 2.2 (Uji Positif: Kesesuaian Isi Ekstraksi)
-  #Tidak ada baris kode khusus untuk uji ini. Arsip dari KU-2.1 diekstrak (tar -xzf) ke /tmp/cek lalu dibandingkan
-  dengan sumber asli memakai diff -r. Karena tar memakai -C (path relatif), struktur direktori hasil ekstraksi sama dengan sumber.
+#KU 2.2
+tar -xzf ../dataBackup/backup_2026-11-14_071051.tar.gz -C /tmp/cek
+diff -r ~/data_uji_anggota2 /tmp/cek/data_uji_anggota2 && echo "ISI SAMA"
+#Mengekstrak arsip ke direktori sementara /tmp/cek dan membandingkan seluruh isi serta struktur direktorinya secara rekursif terhadap sumber asli menggunakan diff -r untuk memastikan tidak ada data yang rusak atau hilang selama kompresi.
 
-#KU 2.3 (Uji Negatif: Direktori Tujuan Read-Only)
-./validasi.sh "$SUMBER" "$TUJUAN"; RC=$?
-if [ $RC -ne 0 ]; then ... exit $RC
-  #Memanggil validasi.sh lalu menyimpan exit status-nya di RC. Jika bukan 0 (pada uji ini 3, tujuan read-only chmod 555),
-  backup dibatalkan, tidak ada arsip dibuat, kegagalan dicatat ke log, dan exit status diteruskan apa adanya.
+#KU 2.3
+./validasi.sh "$SUMBER" "$TUJUAN"
+RC=$?
+if [ $RC -ne 0 ]; then
+    log ERROR "Backup dibatalkan, validasi gagal dengan exit $RC."
+    exit $RC
+fi
+#Memanggil validasi.sh sebagai gerbang awal. Ketika direktori tujuan (../readonly) bermode 555 (tanpa izin tulis/write), validasi.sh mengembalikan exit code 3, sehingga backup.sh langsung membatalkan proses sebelum arsip dibuat dan meneruskan exit status 3.
 
-#KU 2.4 (Uji Negatif: Kegagalan Internal tar)
-if ! tar -czf ... 2>>"$LOG_FILE"; then rm -f "$ARSIP"; ... exit 4
-  #Validasi hanya mengecek direktori, sehingga berkas tanpa izin baca (chmod 000) lolos validasi dan baru gagal saat tar berjalan.
-  Pesan error tar (stderr) dialihkan ke log, arsip parsial dihapus (rm -f), lalu exit 4.
+#KU 2.4
+if ! tar -czf "$ARSIP" -C "$(dirname "$SUMBER")" "$(basename "$SUMBER")" 2>>"$LOG_FILE"; then
+    rm -f "$ARSIP"
+    log ERROR "tar gagal membuat '$ARSIP'. Arsip parsial dihapus."
+    exit 4
+fi
+#Ketika berkas di dalam direktori sumber tidak memiliki izin baca (chmod 000 rahasia.txt), kernel menolak akses baca (Permission denied) sehingga tar gagal di tengah jalan. Blok penanganan error langsung menghapus berkas arsip parsial yang korup dengan rm -f agar tidak menyisakan file rusak dan keluar dengan exit status 4.
 
 
-#BUKTI KASUS UJI KU 2.1 HINGGA 2.4
+#BUKTI KASUS UJI 2.1 HINGGA 2.4
 
-| ID Uji | Nama Skenario | Kondisi Input / Perintah | Ekspektasi Output | Ekspektasi Exit Code |
-| :----: | ----- | :----: | :----: | :----: |
-| KU-2.1 | Uji Positif: Pembuatan Arsip & Permission | `./backup.sh ~/data_uji_anggota2 ../dataBackup` | Arsip .tar.gz ber-timestamp, izin 640, struktur utuh | 0 |
-| KU-2.2 | Uji Positif: Kesesuaian Isi Ekstraksi | `tar -xzf` ke `/tmp/cek` lalu `diff -r` | Tidak ada perbedaan (ISI SAMA) | 0 |
-| KU-2.3 | Uji Negatif: Direktori Tujuan Read-Only | `./backup.sh ~/data_uji_anggota2 ../readonly` (chmod 555) | Ditolak saat validasi, arsip tidak dibuat, log tercatat | 3 |
-| KU-2.4 | Uji Negatif: Kegagalan Baca Berkas Sumber (tar) | `./backup.sh ~/uji_tar ../dataBackup` (rahasia.txt chmod 000) | tar gagal, arsip parsial dihapus, error dicatat ke log | 4 |
+| ID Uji | Nama Skenario | Kondisi Input / Parameter | Ekspektasi Output | Ekspektasi Exit Code |
+| :--- | :--- | :--- | :--- | :--- |
+| KU-2.1 | Uji Positif: Pembuatan Arsip & Permission | `./backup.sh ~/data_uji_anggota2 ../dataBackup` | Arsip `.tar.gz` terbentuk dengan timestamp dan izin `640` (`-rw-r-----`) | 0 |
+| KU-2.2 | Uji Positif: Kesesuaian Isi Ekstraksi | `tar -xzf` ke `/tmp/cek` lalu `diff -r` | Tidak ada perbedaan isi (`ISI SAMA`) | 0 |
+| KU-2.3 | Uji Negatif: Direktori Tujuan Read-Only | `./backup.sh ~/data_uji_anggota2 ../readonly` (`chmod 555`) | Ditolak pada tahap validasi izin tulis, arsip tidak dibuat, log tercatat | 3 |
+| KU-2.4 | Uji Negatif: Kegagalan Baca Berkas Sumber | `./backup.sh ~/uji_tar ../dataBackup` (`chmod 000 rahasia.txt`) | `tar` gagal (`Permission denied`), arsip parsial dihapus otomatis | 4 |
 
 
 [2026-11-14 07:10:51] [SUCCESS] Arsip '../dataBackup/backup_2026-11-14_071051.tar.gz' dibuat dari '/home/audi/data_uji_anggota2' (316 byte).
@@ -42,3 +44,4 @@ if ! tar -czf ... 2>>"$LOG_FILE"; then rm -f "$ARSIP"; ... exit 4
 tar: uji_tar/rahasia.txt: Cannot open: Permission denied
 tar: Exiting with failure status due to previous errors
 [2026-11-14 07:34:01] [ERROR] tar gagal membuat '../dataBackup/backup_2026-11-14_073401.tar.gz'. Arsip parsial dihapus.
+```[cite: 1, 13, 25, 26, 42, 43, 44]
