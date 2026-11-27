@@ -40,12 +40,12 @@ Sesuaikan pembagian komponen dengan matriks kontribusi di laporan (bagian 7.2).
 
 ```
 scripts/     # skrip Bash proyek
-dataSumber/  # data dummy yang dicadangkan (dibuat saat instalasi)
+dataSumber/  # data dummy yang dicadangkan
 dataBackup/  # arsip .tar.gz dan .sha256 (tidak di-commit)
 dataUji/     # tujuan restore (tidak di-commit)
 evidence/    # log dan bukti pengujian
 output/      # laporan.txt untuk dibaca Docker
-readonly/    # direktori uji negatif (dibuat saat instalasi)
+readonly/    # direktori uji negatif
 ```
 
 ## Instalasi
